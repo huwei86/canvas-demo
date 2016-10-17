@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<canvas id="canvas" width="500" height="500" style="border: 1px solid red"   ></canvas>
+<script>
+    var canvas=document.getElementById("canvas");
+    var cxt=canvas.getContext("2d");
+    canvas.style.background="black";
+    var img=new Image();
+    img.src="01.jpg";
+    img.onload=function(){
+        setInterval(shizhong,1000);   //调用函数计时器
+        shizhong();
+    };
+
+    function shizhong(){
+    var time=new Date();
+    var h=time.getHours();
+    var m=time.getMinutes();
+    var s=time.getSeconds();
+    h=h>12? h-12:h;
+     h+=(m/60);
+    //制作时钟圆盘
+    cxt.clearRect(0,0,canvas.width,canvas.height);  //清除
+     //画圆
+    cxt.beginPath();
+    cxt.arc(250,250,200,0,2*Math.PI);
+    cxt.strokeStyle="#00ffff";
+    cxt.lineWidth="5";
+    cxt.stroke();
+    cxt.closePath();
+    cxt.clip();
+    cxt.drawImage(img,40,40,500,500);   //
+    //画时刻度 先位移中心原点到20,250 一共有12个刻度 每个时刻度相邻30度
+    cxt.save();
+    cxt.translate(250,250);
+    cxt.strokeStyle="#ffff00";
+    cxt.lineWidth="7";
+for(var i=0;i<12;i++){
+    cxt.rotate(Math.PI/180*30);
+    cxt.beginPath();
+    cxt.moveTo(0,-195);
+    cxt.lineTo(0,-175);
+    cxt.stroke();
+    cxt.closePath();
+    }
+    cxt.restore();
+    //画分刻度
+    cxt.save();
+    cxt.translate(250,250);
+    cxt.strokeStyle="#ffff00";
+    cxt.lineWidth="5";
+    for(var i=0;i<60;i++){
+        cxt.rotate(Math.PI/180*6);
+        cxt.beginPath();
+        cxt.moveTo(0,-195);
+        cxt.lineTo(0,-185);
+        cxt.stroke();
+        cxt.closePath();
+    }
+    cxt.restore();
+    //画时针
+    cxt.save();
+    cxt.lineWidth="7";
+    cxt.strokeStyle="#00ffff";
+    cxt.translate(250,250);
+    cxt.rotate(Math.PI/180*30*h);//一小时旋转30度 弧度math.pi/180=1弧度
+    cxt.beginPath();
+    cxt.moveTo(0,-130);
+    cxt.lineTo(0,10);
+    cxt.closePath();
+    cxt.stroke();
+    cxt.restore();
+
+    //画分针
+    cxt.save();
+    cxt.lineWidth="5";
+    cxt.strokeStyle="yellow";
+    cxt.translate(250,250);
+    cxt.rotate(Math.PI/180*6*m);//一分钟旋转6度 弧度math.pi/180=1弧度
+    cxt.beginPath();
+    cxt.moveTo(0,-150);
+    cxt.lineTo(0,10);
+    cxt.closePath();
+    cxt.stroke();
+    cxt.restore();
+
+
+    //画秒针
+    cxt.save();
+    cxt.lineWidth="3";
+    cxt.strokeStyle="red";
+    cxt.translate(250,250);
+    cxt.rotate(Math.PI/180*6*s);//一秒钟旋转6度 弧度math.pi/180=1弧度
+    cxt.beginPath();
+    cxt.moveTo(0,-170);
+    cxt.lineTo(0,10);
+    cxt.closePath();
+    cxt.stroke();
+
+
+    //秒针圆中心的小圆
+    cxt.beginPath();
+    cxt.arc(0,0,7,0,2*Math.PI);
+    cxt.strokeStyle="#ff0000";
+    cxt.fillStyle="yellow";
+    cxt.fill();
+    cxt.closePath();
+    cxt.stroke();
+
+
+    //秒针上面的圆
+    cxt.beginPath();
+    cxt.arc(0,-150,7,0,2*Math.PI);
+    cxt.strokeStyle="#ff0000";
+    cxt.fillStyle="yellow";
+    cxt.fill();
+    cxt.closePath();
+    cxt.stroke();
+    cxt.restore();
+
+    //显示时间
+    cxt.font = "18px 微软雅黑";
+    cxt.lineWidth = 2;
+    cxt.fillStyle = "red";
+    h=time.getHours();
+    m=time.getMinutes();
+    s=time.getSeconds();
+    var str = (h > 10 ? h:("0" + h))+":"+(m > 10 ? m : ("0" + m))+":"+(s > 10 ? s : ("0" + s));
+    cxt.fillText(str, 210, 380);
+
+    //制造
+    cxt.font = "12px 宋体";
+    cxt.lineWidth = 1;
+    cxt.fillText("Made By Hu fatty", 210, 400);
+    }
+    shizhong();
+    setInterval(shizhong,1000);
+</script>
+</body>
+</html>
